@@ -1,0 +1,127 @@
+{
+  "info": {
+    "name": "Ega Bank API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" },
+    { "key": "clientId", "value": "1" },
+    { "key": "accountId", "value": "1" },
+    { "key": "targetAccountId", "value": "2" }
+  ],
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "const json = pm.response.json();",
+            "pm.collectionVariables.set('token', json.token);"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Create Client",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/api/clients",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Afi\",\n  \"lastName\": \"Mensah\",\n  \"birthDate\": \"1995-06-14\",\n  \"gender\": \"FEMALE\",\n  \"address\": \"Lome\",\n  \"phoneNumber\": \"+22890000000\",\n  \"email\": \"afi@example.com\",\n  \"nationality\": \"Togolaise\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Account",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/api/accounts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"SAVINGS\",\n  \"ownerId\": {{clientId}}\n}"
+        }
+      }
+    },
+    {
+      "name": "Deposit",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/api/accounts/{{accountId}}/deposit",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 50000,\n  \"description\": \"Depot initial\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Withdraw",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/api/accounts/{{accountId}}/withdraw",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 10000,\n  \"description\": \"Retrait guichet\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Transfer",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/api/accounts/transfer",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sourceAccountId\": {{accountId}},\n  \"targetAccountId\": {{targetAccountId}},\n  \"amount\": 5000,\n  \"description\": \"Virement interne\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Transactions By Period",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/api/accounts/{{accountId}}/transactions?start=2026-01-01&end=2026-12-31"
+      }
+    },
+    {
+      "name": "Statement PDF",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/api/accounts/{{accountId}}/statement?start=2026-01-01&end=2026-12-31"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+& "$PSScriptRoot\backend\.tools\apache-maven-3.9.9\bin\mvn.cmd" -f "$PSScriptRoot\backend\pom.xml" spring-boot:run

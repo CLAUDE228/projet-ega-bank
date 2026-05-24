@@ -1,0 +1,6 @@
+target
+.mvn
+.idea
+node_modules
+*.log
+**/application-dev.properties

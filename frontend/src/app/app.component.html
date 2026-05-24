@@ -1,0 +1,18 @@
+<!-- Splash Screen -->
+<div class="splash-screen" *ngIf="splash">
+  <div class="splash-inner">
+    <div class="splash-logo-ring">
+      <i class="fas fa-university"></i>
+    </div>
+    <h1>EGA <span>BANK</span></h1>
+    <p>Secure Digital Banking Platform</p>
+    <div class="splash-bar">
+      <div class="splash-progress"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Main App -->
+<div class="app-shell-clean" *ngIf="!splash">
+  <router-outlet></router-outlet>
+</div>
